@@ -1,0 +1,81 @@
+$? 0 quand precedemment il ya pas eu derreur
+$? 127 quand precedemment il ya une erreur
+#$"" retourne $
+$'' retourne NULL
+$?= renvoie NULL
+$\0 renvoie $0
+$world = expression valide
+$# 0
+$@ null
+$* null
+
+
+CTRL-D envoie un EOF(end of file) au stdin en quelque sorte dans notre readline il renvoie NULL; 
+
+
+commande -"expression"-?redirection-"file"*(autant de fois)-"expression"-(PIPE)-retour au debut
+
+pour obtenir le chemin d'access de chaque commande:
+-separer les chemins du PATH faire un split sur les ":"
+-rajouter "/" avant la commande
+-verfier si la concatenation des deux deux chemins existe acec la commande access
+EX: access(chemin_concat,F_OK|X_OK)==0
+F_OK et X_OK sont des maccros pour verifier juste l'etat X_OK pour la permission et F_OK pour l'existence
+
+-le in_file est la dernier valeur choisi;
+-outfile: toute les valeurs sont rediriger vers les outfiles.
+
+---------------------------------------------------------------------------------------------------------------------
+MINISHELL:
+PARSING
+->[ls] [<] [file] [-l] [file1] [|] ect...
+->
+
+ligne de commande shell:
+-commande
+-les redirections->les noms de fichiers
+- arguments
+-pipes
+---------------------------------check_token------------------------------------------------
+quote_errror=verifie si la quote est fermee;
+separator= separe en token selon les redirections pipes et espaces;
+check_tokens=gere si les arguments sont bien disposels
+-redirection doit avoir un mots qui le suit
+-pipe(|) ne doit jamais etre au debut
+-pipe(|) doit etre suivi de quelque chose
+-dans les cas des quotes il ya plus de seaprateur jusqu'a la fermeture
+----------------------------------replace------------------------------------------------
+---je remplace les mots avec des quotes
+---je remplace la valeur des $var
+-> $U"SE"r
+path=valeur(U)
+newtoken=copypath+s
+-> [$USE]
+->[ls][$USER][$USER$USER]["je vois"]['ok'fdfdf]["jevois$USERpore$USER"]['$USER']
+     [fatsaa-m][fatsaa-m$USER][je vois][okfdfd][jevoisfatsaa-m][$USER]
+->[ls][fatsaa-m][fatsaa-mfatsaa-m]
+->[ls][fatsaa-m][je vois][ok][jevoisfatsaa-m][$USER]
+cas1: le "$"
+je parcours la chaine apres le dollar
+je marree lorsque je rencontre autre chose qu'une lettre
+
+newsize= taille_token + taille_valeur_var - taille_var
+
+check_token_again cat probleme detectee;
+--------------------------------------------create_command------------------------------------------------------
+->[ls] [arg1] [>] [file] [-l] [>>] [file2] [<] [file3] [<<] [file4] [|] [ls]
+command{
+	-command:ls,
+	-args:{ls,-l,arg1,NULL}
+	-outfile{(>, file),(>>, file2)}
+	-inputfile{(<,file3),(<<, file4)}
+	-prev:NULL
+	-next:command{
+		command:ls
+		args:{ls, NULL}.
+		outfile:NULL,
+		inputfile:NULL,
+		prev:MA_COMMAND,
+		next:NULL;
+	}
+}
