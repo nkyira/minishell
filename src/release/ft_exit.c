@@ -23,6 +23,7 @@ void	ft_exit(t_data *data, int status)
 {
 	free_data(data);
 	free_arg(data->env);
+	free_arg(data->export);
 	rl_clear_history();
 	exit(status);
 }

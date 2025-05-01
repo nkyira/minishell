@@ -59,6 +59,7 @@ typedef struct s_data{
 	int		sortie;
 	int		pipefd[2];
 	char	**env;
+	char	**export;
 	char	*input;
 	t_token	*token;
 	t_command	*command;
@@ -79,7 +80,7 @@ char	*replace_quote(char	*str, char quote);
 /*						Dollar				*/
 char	*search_env(char *str, t_data *data, int n);
 char	*replace_path(char *str, int *i, int size_word, t_data *data);
-int		position_env(char *str, t_data *data, int n);
+int		position_env(char *str, char **env, int n);
 
 /*					Verification			*/
 

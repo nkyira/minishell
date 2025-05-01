@@ -70,6 +70,7 @@ int main(int argc, char **argv, char **env)
 	(void)argv;
 	data.sortie = 0;
 	data.env = copy_env(env);
+	data.export = copy_env(env);
 	if (!data.env)
 		return (1);
 	init_data(&data, NULL);

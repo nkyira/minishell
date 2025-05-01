@@ -36,19 +36,19 @@ int	env_parcourt(char *str)
 	return (i);
 }
 
-int	position_env(char *str, t_data *data, int n)
+int	position_env(char *str, char **env, int n)
 {
 	int	i;
 
 	i = 0;
-	while (data->env[i])
+	while (env[i])
 	{
-		if (n != env_parcourt(data->env[i]))
+		if (n != env_parcourt(env[i]))
 		{
 			i++;
 			continue ;
 		}
-		if (ft_strncmp(str, data->env[i], n) == 0)
+		if (ft_strncmp(str, env[i], n) == 0)
 		{
 			return (i);
 		}

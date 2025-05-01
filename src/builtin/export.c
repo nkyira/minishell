@@ -27,9 +27,9 @@ int check_word(char *str)
 			return (-1);
 		i++;
 	}
-	if (str[i] != '=')
-		return (0);
-	return (1);
+	if (str[i] == '=' && str[i + 1])
+		return (1);
+	return (0);
 }
 
 void	error_export(char *str)
@@ -39,19 +39,19 @@ void	error_export(char *str)
 	ft_putendl_fd("': not a valid identifier", 2);
 }
 
-int	export(t_data *data, char *str)
+int	export(char ***env, char *str)
 {
 	int		erreur;
 	int		pos;
 	
 	erreur = 0;
-	pos = position_env(str, data, env_parcourt(str));
+	pos = position_env(str, *env, env_parcourt(str));
 	if (pos != -1)
 	{
-		data->env[pos] = change_var_env(str, data->env[pos]);
+		(*env)[pos] = change_var_env(str, (*env)[pos]);
 		return (1);
 	}
-	data->env = ft_new_env(data->env, str, &erreur);
+	*env = ft_new_env(*env, str, &erreur);
 	if (erreur)
 	{
 		perror("Error");
@@ -65,19 +65,34 @@ void	export_builtin(t_data *data, char **argv)
 	int	i;
 	int	verifi;
 
+	if (!argv[1])
+	{
+		while (data->export[++i])
+		{
+			ft_putstr_fd("export ", 1);
+			ft_putendl_fd(data->export[i] , 1);
+		}
+	}
 	i = 1;
-	(void)data;
 	while (argv[i])
 	{
 		verifi = check_word(argv[i]);
+		printf("verifi = %d\n", verifi);
 		if (verifi == -1)
 		{
 			error_export(argv[i]);
 			data->sortie = 1;
 		}
-		else if (verifi == 1)
+		if (verifi == 0)
 		{
-			if (export(data, argv[i]) == -1)
+			if (export(&data->export, argv[i]) == -1)
+				return ;
+		}
+		if (verifi == 1)
+		{
+			if (export(&data->export, argv[i]) == -1)
+				return ;
+			if (export(&data->env, argv[i]) == -1)
 				return ;
 		}
 		i++;

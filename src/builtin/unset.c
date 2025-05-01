@@ -66,7 +66,7 @@ void	unset_builtin(t_data *data, char **argv)
 		}
 		else
 		{
-			d = position_env(argv[i], data, ft_strlen(argv[i]));
+			d = position_env(argv[i], data->env, ft_strlen(argv[i]));
 			delete_env_var(data, d);
 		}
 		i++;
