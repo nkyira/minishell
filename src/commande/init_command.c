@@ -24,7 +24,6 @@ t_command	*init_command(void)
 	command->args = NULL;
 	command->outfile = NULL;
 	command->inputfile = NULL;
-	command->errFile = NULL;
 	command->next = NULL;
 	command->prev = NULL;
 	command->command = NULL;

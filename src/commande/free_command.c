@@ -38,8 +38,6 @@ void	free_command(t_command *command)
 {
 	if (command->command)
 		free(command->command);
-	if (command->errFile)
-		free(command->errFile);
 	free_redirects(command->outfile);
 	free_redirects(command->inputfile);
 	free_arg(command->args);
