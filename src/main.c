@@ -12,68 +12,17 @@
 
 #include "../include/minishell.h"
 
-void	lecture(t_token *token)
+int	main(int argc, char **argv, char **env)
 {
-	int i;
-
-	i = 0;
-	while (token)
-	{
-		printf("%d-%s type == %d\n",token->index, token->str, token->type);
-		token = token->next;
-		i++;
-	}
-}
-
-void lecture_command(t_data data)
-{
-	int i = 0;
-
-	t_command	*command = data.command;
-	t_redict	*outfile = command->outfile;
-	t_redict	*inputfile = command->inputfile;
-	while (command)
-	{
-		printf("%s ", command->command);
-		while (outfile)
-		{
-			printf("outfile %s ", outfile->file);
-			outfile = outfile->next;
-		}
-		while (inputfile)
-		{
-			printf("infile %s ", inputfile->file);
-			inputfile = inputfile->next;
-		}
-		while (command->args && command->args[i])
-		{
-			printf("word %s ",command->args[i]);
-			i++;
-		}
-		printf("\n");
-		command = command->next;
-		i = 0;
-		if(!command)
-			break;
-		outfile = command->outfile;
-		inputfile = command->inputfile;
-	}
-}
-
-int main(int argc, char **argv, char **env)
-{
-	char *r;
-	int i = 0;
-	t_data data;
+	char	*r;
+	t_data	data;
 
 	(void)argc;
 	(void)argv;
 	data.sortie = 0;
 	data.env = copy_env(env);
 	data.export = copy_env(env);
-	if (!getcwd(data.oldpwd, sizeof(data.oldpwd)))
-		return (1);
-	if (!data.env || !data.export)
+	if (!getcwd(data.oldpwd, sizeof(data.oldpwd)) || !data.env || !data.export)
 		return (1);
 	while (1)
 	{
@@ -84,16 +33,8 @@ int main(int argc, char **argv, char **env)
 			exit_builtin(&data, NULL);
 		add_history(r);
 		signals_noninteractif();
-		if (parsing_start(&data))
-		{
-			//lecture_command(data);
-			;
-		}
-		else
-		{
-		}
+		parsing_start(&data);
 		free_data(&data);
-		i++;
 	}
 	ft_exit(&data, 1);
 	return (0);
