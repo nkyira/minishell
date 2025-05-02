@@ -1,28 +1,39 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                         ::::::::           */
+/*   minishell.h                                         :+:    :+:           */
+/*                                                      +:+                   */
+/*   By: jodavis <marvin@42.fr>                        +#+                    */
+/*                                                    +#+                     */
+/*   Created: 2025/05/02 17:29:01 by jodavis        #+#    #+#                */
+/*   Updated: 2025/05/02 17:29:03 by jodavis        ########   odam.nl        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "../printf/ft_printf.h"
 # include "../libft/libft.h"
 # include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <sys/wait.h>
-#include <unistd.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <sys/wait.h>
+# include <unistd.h>
 # include <errno.h>
-#include <sys/stat.h>
-#include <signal.h>
-#include <linux/limits.h>
-
-#define MINISHELL "./minishell"
-#define SHELLEVEL "SHLVL"
+# include <sys/stat.h>
+# include <signal.h>
+# include <linux/limits.h>
+# define MINISHELL "./minishell"
+# define SHELLEVEL "SHLVL"
 
 enum type {
 	ESPACE=1,
-	INPUT,//<
-	TRUNC,//>
-	HEREDOC,//<<
-	APPEND,//>>
+	INPUT,
+	TRUNC,
+	HEREDOC,
+	APPEND,
 	CMD,
-	PIPE,//|
+	PIPE,
 };
 
 enum status_quote {
@@ -36,18 +47,18 @@ typedef struct s_token{
 	int				type;
 	struct s_token	*prev;
 	struct s_token	*next;
-	int index;
+	int				index;
 } t_token;
 
 typedef struct s_redirect{
-	int		type;
-	char	*file;
-	struct	s_redirect *next;
+	int					type;
+	char				*file;
+	struct	s_redirect	*next;
 }t_redict;
 
 typedef struct s_command{
-	char		*command;
-	char		**args;
+	char			*command;
+	char			**args;
 	int		ofile;
 	int		infile;
 	t_redict	*outfile;

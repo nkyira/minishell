@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   echo.c                                              :+:    :+:           */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fatsaa-m <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:46:24 by fatsaa-m          #+#    #+#             */
-/*   Updated: 2025/04/08 15:46:38 by fatsaa-m         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:24:11 by jodavis        ########   odam.nl        */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int successive_n(char *str)
+int	successive_n(char *str)
 {
-	int i;
+	int	i;
 
 	i = 2;
 	if (str[1] != 'n')
@@ -37,7 +37,7 @@ void	echo_builtin(char **argv)
 
 	i = 1;
 	no_new_line_flag = 0;
-	while (argv[i] && argv[i][0] == '-' && successive_n(argv[i])) //passer les premiers -n
+	while (argv[i] && argv[i][0] == '-' && successive_n(argv[i]))
 	{
 		no_new_line_flag = 1;
 		i++;
@@ -45,7 +45,7 @@ void	echo_builtin(char **argv)
 	while (argv[i])
 	{
 		ft_printf("%s", argv[i]);
-		if (argv[i + 1] != NULL) //pas espace derniere ligne
+		if (argv[i + 1] != NULL)
 			ft_printf(" ");
 		i++;
 	}

@@ -12,11 +12,11 @@
 
 #include "../../include/minishell.h"
 
-static void cd_error(char *str)
+static void	cd_error(char *str)
 {
 	write(2, "cd: ", 4);
 	write(2, str, ft_strlen(str));
-	ft_putendl_fd(": No such file or directory",2);
+	ft_putendl_fd(": No such file or directory", 2);
 }
 
 static int	cd_access_error(t_data *data, char *str)
@@ -56,14 +56,14 @@ static int	raccourci(t_data *data, char *str)
 			free(temp);
 			data->sortie = 1;
 			return (1);
-		};
+		}
 		free(temp);
 		return (1);
 	}
-	return 0;
+	return (0);
 }
 
-void cd_builtin(t_data *data, char **argv)
+void	cd_builtin(t_data *data, char **argv)
 {	
 	struct stat	path_stat;
 
@@ -92,6 +92,6 @@ void cd_builtin(t_data *data, char **argv)
 			perror(argv[1]);
 			data->sortie = 1;
 			return ;
-		};
+		}
 	}
 }
