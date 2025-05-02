@@ -12,31 +12,34 @@
 
 #include "../../include/minishell.h"
 
-int	append(t_redict *redirection)
+int redirect_infile(int fd)
 {
-	t_redict	*temp;
-	int			fd;
-
-	temp = redirection;
-	while (temp)
+	if (fd == -1)
+		return (-1);
+	if (dup2(fd, STDIN_FILENO) == -1)
 	{
-		if (temp->type == TRUNC)
-			fd = open(temp->file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		else
-			fd = open(temp->file, O_CREAT | O_APPEND | O_WRONLY, 0644);
-		if (fd == -1)
-		{
-			perror(temp->file);
-			return (-1);
-		}
-		if (dup2(fd, STDOUT_FILENO) == -1)
-		{
-			ft_putendl_fd(strerror(errno), 2);
-			close(fd);
-			return (-1);
-		}
+		ft_putendl_fd(strerror(errno), 2);
 		close(fd);
-		temp = temp->next;
+		if (access("heredoc.tmp", F_OK) == 0)
+			unlink("heredoc.tmp");
+		return (-1);
 	}
+	close(fd);
+	if (access("heredoc.tmp", F_OK) == 0)
+		unlink("heredoc.tmp");
+	return (0);
+}
+
+int	append(int fd)
+{
+	if (fd == -1)
+		return (-1);
+	if (dup2(fd, STDOUT_FILENO) == -1)
+	{
+		ft_putendl_fd(strerror(errno), 2);
+		close(fd);
+		return (-1);
+	}
+	close(fd);
 	return (0);
 }

@@ -17,4 +17,5 @@ void	init_data(t_data *data, char *input)
 	data->input = input;
 	data->token = NULL;
 	data->command = NULL;
+	data->pid = getpid();
 }

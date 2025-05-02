@@ -66,6 +66,8 @@ char	*search_env(char *str, t_data *data, int n)
 	{
 		return (ft_itoa(data->sortie));
 	}
+	if (str[0] == '$')
+		return (ft_itoa(data->pid));
 	while (data->env[i])
 	{
 		if (n != env_parcourt(data->env[i]))
@@ -75,7 +77,7 @@ char	*search_env(char *str, t_data *data, int n)
 		}
 		if (ft_strncmp(str, data->env[i], n) == 0)
 		{
-			return (world_env(data->env[i]));
+			return (ft_strdup(world_env(data->env[i])));
 		}
 		i++;
 	}

@@ -36,18 +36,18 @@ char	*new_word_in_token(char	*str, char *temp, int *i)
 	return (newstr);
 }
 
-static	char	*replace_dollar_squote(char *str, int *i)
+char	*replace_dollar_squote(char *str, int *i, char quote)
 {
 	char	*temp;
 	char	*newstr;
 	int		taille;
 
-	temp = init_replace_quote(str, i, '\'');
+	temp = init_replace_quote(str, i, quote); //'\''
 	if (!temp)
 		return (NULL);
 	taille = ft_strlen(temp);
 	*i = *i + taille;
-	newstr = copy_end_line(str, temp, taille, '\'');
+	newstr = copy_end_line(str, temp, taille, quote);
 	free(temp);
 	free(str);
 	return (newstr);
@@ -86,7 +86,7 @@ char	*replace_with_quote(char *str, t_data *data, int *i, int *status)
 	if (*status == DQUOTE)
 		str = replace_dollar_dquote(str, i, data);
 	else if (*status == SQUOTE)
-		str = replace_dollar_squote(str, i);
+		str = replace_dollar_squote(str, i, '\'');
 	*status = DEFAULT;
 	return (str);
 }

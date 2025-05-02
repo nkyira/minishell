@@ -56,6 +56,7 @@ static char	*replace_path_util(char *str, int *i, int size_word, t_data *data)
 		newstr[j] = str[j];
 		j++;
 	}
+	free(path);
 	copy_chaine(newstr, str, j + size_word + 1, j + taille);
 	just_for_norminette(str, i, taille);
 	return (newstr);

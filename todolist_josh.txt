@@ -1,7 +1,0 @@
-1 cat "" vs cat $var vs cat "$cat"
-2 code de sortie signaux
-3 processus enfant pas de pipe?
-4 <C-c> exit code
-5 understand pid and execution
-6 export
-7 bonus

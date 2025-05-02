@@ -28,7 +28,7 @@ static int	redirect_heredoc(char *str)
 		signals_interactif();
 		r = readline(">");
 		signals_noninteractif();
-		if (!r || ft_strncmp(r, str, ft_strlen(str)) == 0)
+		if (!r || ft_strncmp(r, str, ft_max(ft_strlen(str), ft_strlen(r))) == 0)
 		{
 			if (!r)
 				heredoc_warning(str);
@@ -37,72 +37,39 @@ static int	redirect_heredoc(char *str)
 		ft_putendl_fd(r, fd);
 		free(r);
 	}
+	if (r)
+		free(r);
 	close(fd);
 	return (0);
 }
 
-static int	heredoc(t_redict *redirection)
+int infile(t_token *token)
 {
-	t_redict	*temp;
+	int fd;
 
-	temp = redirection;
-	while (temp)
+	if (token->type == HEREDOC)
 	{
-		if (temp->type == HEREDOC)
-		{
-			if (redirect_heredoc(temp->file) == -1)
-				return (-1);
-		}
-		temp = temp->next;
+		redirect_heredoc(token->next->str);
+		fd = open("heredoc.tmp", O_RDONLY);
 	}
-	return (1);
-}
-
-static void	error_file(t_redict *temp)
-{
-	if (temp->type == HEREDOC)
-		perror("heredoc.tmp");
 	else
-		perror(temp->file);
+		fd = open(token->next->str, O_RDONLY);
+	if (token->type == HEREDOC && fd == -1)
+		perror("heredoc.tmp");
+	else if (fd == -1)
+		perror(token->next->str);
+	return (fd);
 }
 
-static int	input_course(t_redict *temp)
+int outfile(t_token *token)
 {
-	int	fd;
+	int fd;
 
-	while (temp)
-	{
-		if (temp->type == HEREDOC)
-			fd = open("heredoc.tmp", O_RDONLY);
-		else
-			fd = open(temp->file, O_RDONLY);
-		if (fd == -1)
-		{
-			error_file(temp);
-			return (-1);
-		}
-		if (dup2(fd, STDIN_FILENO) == -1)
-		{
-			ft_putendl_fd(strerror(errno), 2);
-			close(fd);
-			return (-1);
-		}
-		close(fd);
-		temp = temp->next;
-	}
-	return (0);
-}
-
-int	redirect_input(t_redict *redirection)
-{
-	t_redict	*temp;
-
-	temp = redirection;
-	if (heredoc(redirection) == -1)
-		return (-1);
-	if (input_course(temp) == -1)
-		return (-1);
-	if (access("heredoc.tmp", F_OK) == 0)
-		unlink("heredoc.tmp");
-	return (0);
+	if (token->type == TRUNC)
+		fd = open(token->next->str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	else
+		fd = open(token->next->str, O_CREAT | O_APPEND | O_WRONLY, 0644);
+	if (fd == -1)
+		perror(token->next->str);
+	return (fd);
 }

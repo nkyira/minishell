@@ -40,6 +40,8 @@ int	size_path(char *str, char caracter)
 	int	i;
 
 	i = 0;
+	if (str[i] && str[i] == '$')
+		return (1);
 	if (str[i] && str[i] == '?')
 		return (1);
 	while (str[i] && str[i] != caracter && !special_character(str[i]) )

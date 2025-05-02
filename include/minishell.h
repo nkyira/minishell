@@ -12,8 +12,8 @@
 #include <signal.h>
 #include <linux/limits.h>
 
-#define GOOD "0"
-#define	BAD	"127"
+#define MINISHELL "./minishell"
+#define SHELLEVEL "SHLVL"
 
 enum type {
 	ESPACE=1,
@@ -48,6 +48,8 @@ typedef struct s_redirect{
 typedef struct s_command{
 	char		*command;
 	char		**args;
+	int		ofile;
+	int		infile;
 	t_redict	*outfile;
 	t_redict	*inputfile;
 	struct s_command	*next;
@@ -61,8 +63,10 @@ typedef struct s_data{
 	char	**env;
 	char	**export;
 	char	*input;
+	char	oldpwd[PATH_MAX];
 	t_token	*token;
 	t_command	*command;
+	pid_t	pid;
 } t_data;
 
 /*				remplacer des quotes et du dollar	*/
@@ -107,6 +111,9 @@ char	*change_var_env(char *str, char *var_env);
 int 	parsing_start(t_data *data);
 int 	separator(t_data *data, char *input, int status);
 int		create_commands(t_command **command, t_token *token);
+int		infile(t_token *token);
+int		outfile(t_token *token);
+char	*replace_dollar_squote(char *str, int *i, char quote);
 
 /*					initialisation			*/
 t_token *init_token(int type, char *str, int size);
@@ -128,8 +135,8 @@ t_token	*free_search_token(t_token *token);
 
 /*				commande					*/
 char	*command_path(t_command *command, t_data *data);
-int		append(t_redict *redirection);
-int		redirect_input(t_redict *redirection);
+int		append(int fd);
+int		redirect_infile(int fd);
 
 /*				execution					*/
 void	execute(t_data *data);
@@ -139,7 +146,8 @@ void	parent_process(int *prev_fd, t_data *data, t_command *cmd);
 void	child_process(t_command *command, t_data *data, int prev_fd);
 void	close_fds_one_builtin(t_command *command, int *stdoutfd, int *stdinfd);
 void	exe_one_built(t_data *data, t_command *command, int *stdi, int *stdo);
-
+int		export(char ***env, char *str);
+void	execute_builtin(t_data *data, t_command *command);
 /*				DEbug					*/
 void 	command_not_found(char *command);
 int		check_dir(char *path, char *cmd, t_data *data);
@@ -148,6 +156,7 @@ void 	error_tube(void);
 void	heredoc_warning(char *str);
 void	error_export(char *str);
 void	error_fork(t_data *data);
+void	no_such_file(char *command);
 
 /*			Signal					*/
 void	signals_interactif(void);
@@ -157,9 +166,10 @@ void	signals_noninteractif(void);
 int		is_builtin(char *command);
 void 	exit_builtin(t_data *data, char **argv);
 void 	pwd_builtin(t_data *data, char **argv);
-int 	cd_builtin(char **argv);
+void 	cd_builtin(t_data* data, char **argv);
 void	export_builtin(t_data *data, char **argv);
 void	echo_builtin(char **argv);
 void	unset_builtin(t_data *data, char **argv);
+void	env_builtin(t_data *data, char **argv);
 
 #endif

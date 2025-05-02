@@ -61,11 +61,11 @@ SOURCES = $(PARSING_SRC)separator.c $(PARSING_SRC)parsing_start.c\
 			$(COMMAND_SRC)create_command.c $(COMMAND_SRC)free_command.c\
 			$(COMMAND_SRC)init_command.c $(COMMAND_SRC)utils_command.c \
 			$(COMMAND_SRC)command_path.c $(COMMAND_SRC)utils2_command.c \
-			$(EXEC_SRC)exec_command.c $(EXEC_SRC)exec.c $(EXEC_SRC)redirection_trunc.c\
-			$(EXEC_SRC)redirection_input.c $(EXEC_SRC)exec_parent_child.c\
+			$(EXEC_SRC)exec_command.c $(EXEC_SRC)exec.c $(EXEC_SRC)redirection.c\
+			$(EXEC_SRC)create_fd.c $(EXEC_SRC)exec_parent_child.c $(EXEC_SRC)exec_builtin.c\
 			$(SIGNAL)signal.c\
 			$(RELEASE_SRC)ft_exit.c\
-			$(BUILTIN_SRC)exit.c $(BUILTIN_SRC)pwd.c $(BUILTIN_SRC)cd.c\
+			$(BUILTIN_SRC)exit.c $(BUILTIN_SRC)pwd.c $(BUILTIN_SRC)cd.c $(BUILTIN_SRC)env.c\
 			$(BUILTIN_SRC)export.c $(BUILTIN_SRC)echo.c $(BUILTIN_SRC)unset.c\
 			$(DEBUG)error.c $(DEBUG)error_fork.c\
 			$(SRC)main.c 

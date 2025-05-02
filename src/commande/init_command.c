@@ -28,8 +28,19 @@ t_command	*init_command(void)
 	command->next = NULL;
 	command->prev = NULL;
 	command->command = NULL;
+	command->infile = -2;
+	command->ofile = -2;
 	return (command);
 }
+
+int error_fd(int fd_out, int fd_in)
+{
+	if (fd_out == -1 || fd_in == -1)
+	{
+		return (1);
+	}
+	return 0;
+} 
 
 t_redict	*init_redirect(int type, char *file)
 {
@@ -67,9 +78,21 @@ t_command	*init_file(t_command *command, t_token *token)
 	if (token->type == TRUNC || token->type == APPEND)
 	{
 		lastadd_redirect(&command->outfile, temp);
+		if (!error_fd(command->ofile, command->infile))
+		{
+			if (command->ofile != -2)
+				close(command->ofile);
+			command->ofile = outfile(token);
+		}
 	}
 	else if (token->type == HEREDOC || token->type == INPUT)
-	{
+	{	
+		if (!error_fd(command->ofile, command->infile))
+		{
+			if (command->infile != -2)
+				close(command->infile);
+			command->infile = infile(token);
+		}
 		lastadd_redirect(&command->inputfile, temp);
 	}
 	return (command);

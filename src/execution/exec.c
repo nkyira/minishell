@@ -44,8 +44,8 @@ static int	more_one_command(t_command *command, t_data *data, int *cpid)
 		}
 		if (*cpid == 0)
 			child_process(command, data, prev_fd);
-		else
-			parent_process(&prev_fd, data, command);
+		else{//printf("parent %d\n",*cpid);
+			parent_process(&prev_fd, data, command);}
 		command = command->next;
 	}
 	return (1);

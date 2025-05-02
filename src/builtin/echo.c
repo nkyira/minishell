@@ -12,6 +12,24 @@
 
 #include "../../include/minishell.h"
 
+int successive_n(char *str)
+{
+	int i;
+
+	i = 2;
+	if (str[1] != 'n')
+	{
+		return (0);
+	}
+	while (str[i] == 'n')
+	{
+		i++;
+	}
+	if (str[i] != '\0')
+		return (0);
+	return (1);
+}
+
 void	echo_builtin(char **argv)
 {
 	int	i;
@@ -19,8 +37,7 @@ void	echo_builtin(char **argv)
 
 	i = 1;
 	no_new_line_flag = 0;
-	while (argv[i] && argv[i][0] == '-' && argv[i][1] == 'n'
-		&& argv[i][2] == '\0') //passer les premiers -n
+	while (argv[i] && argv[i][0] == '-' && successive_n(argv[i])) //passer les premiers -n
 	{
 		no_new_line_flag = 1;
 		i++;

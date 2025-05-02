@@ -44,7 +44,7 @@ int	parsing_start(t_data *data)
 	}
 	if (replace(data))
 		return (0);
-	check_token_again(&data->token);
+	//check_token_again(&data->token);
 	if (!create_commands(&data->command, data->token))
 		return (0);
 	execute(data);

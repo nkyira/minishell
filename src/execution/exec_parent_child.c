@@ -20,9 +20,10 @@ int	get_children(t_data *data, pid_t pid)
 
 	save_status = 0;
 	wpid = 0;
-	while (wpid != -1)
+	while (wpid != -1 || errno != ECHILD)
 	{
 		wpid = waitpid(-1, &status, 0);
+		//printf("%d --- %d---status %d\n",wpid,pid,status);
 		if (wpid == pid)
 			save_status = status;
 		continue ;

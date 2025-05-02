@@ -25,7 +25,14 @@ void	check_token_again(t_token **token)
 	while (temp)
 	{
 		if (ft_strlen(temp->str) == 0)
-			temp = free_search_token(temp);
+		{
+			if (!temp->prev)
+				temp = free_search_token(temp);
+			else if (temp->prev->type == CMD || temp->prev->type == PIPE)
+				temp = free_search_token(temp);
+			else
+				temp = temp->next;
+		}
 		else
 			temp = temp->next;
 	}

@@ -19,7 +19,7 @@ static void cd_error(char *str)
 	ft_putendl_fd(": No such file or directory",2);
 }
 
-static int	cd_access_error(char *str)
+static int	cd_access_error(t_data *data, char *str)
 {
 	if (str[0] == '-')
 	{
@@ -30,13 +30,40 @@ static int	cd_access_error(char *str)
 	}
 	if (access(str, F_OK) != 0)
 	{
+		data->sortie = 1;
 		perror(str);
 		return (1);
 	}
 	return (0);
 }
 
-int cd_builtin(char **argv)
+static int	raccourci(t_data *data, char *str)
+{
+	char	*temp;
+
+	if (!ft_memcmp(str, "-", ft_strlen(str)))
+	{
+		if (!data->oldpwd)
+			return (1);
+		printf("%s\n", data->oldpwd);
+		temp = ft_strdup(data->oldpwd);
+		if (!temp)
+			return (1);
+		getcwd(data->oldpwd, sizeof(data->oldpwd));
+		if (chdir(temp) != 0)
+		{
+			perror(str);
+			free(temp);
+			data->sortie = 1;
+			return (1);
+		};
+		free(temp);
+		return (1);
+	}
+	return 0;
+}
+
+void cd_builtin(t_data *data, char **argv)
 {	
 	struct stat	path_stat;
 
@@ -45,21 +72,26 @@ int cd_builtin(char **argv)
 		if (argv[2])
 		{
 			ft_putendl_fd("cd: too many arguments", 2);
-			return (1);
+			data->sortie = 1;
+			return ;
 		}
-		if (cd_access_error(argv[1]))
-			return (1);
+		if (raccourci(data, argv[1]))
+			return ;
+		if (cd_access_error(data, argv[1]))
+			return ;
 		stat(argv[1], &path_stat);
 		if (S_ISREG(path_stat.st_mode))
 		{
 			cd_error(argv[1]);
-			return (1);
+			data->sortie = 1;
+			return ;
 		}
-		if (chdir(argv[1]) != 0)
+		getcwd(data->oldpwd, sizeof(data->oldpwd));
+		if (chdir(argv[1]) != 0 || !data->oldpwd)
 		{
 			perror(argv[1]);
-			return (1);
-		}
+			data->sortie = 1;
+			return ;
+		};
 	}
-	return (0);
 }

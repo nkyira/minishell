@@ -12,15 +12,15 @@
 
 #include "../../include/minishell.h"
 
-static char	**split_path(t_data *data)
+static char	**split_path(t_data *data, char *command)
 {
 	char	**paths;
 	char	*path;
 
-	path = ft_strdup(search_env("PATH", data, 4));
+	path = search_env("PATH", data, 4);
 	if (!path)
 	{
-		perror(path);
+		no_such_file(command);
 		return (NULL);
 	}
 	paths = ft_split(path, ':');
@@ -51,7 +51,7 @@ static char	*command_path_utils(t_command *command, t_data *data, char **paths)
 	char	*path_access;
 
 	i = 0;
-	while (paths[i])
+	while (command->command[0] && paths[i])
 	{
 		path_access = join_path(paths[i], command->command);
 		if (!path_access)
@@ -59,9 +59,7 @@ static char	*command_path_utils(t_command *command, t_data *data, char **paths)
 		if (access(path_access, F_OK) == 0)
 		{
 			if (access(path_access, X_OK) == 0)
-			{
 				return (path_access);
-			}
 			perror(path_access);
 			data->sortie = errno;
 			return (NULL);
@@ -94,7 +92,7 @@ char	*command_path(t_command *command, t_data *data)
 		free(command->command);
 		return (NULL);
 	}
-	paths = split_path(data);
+	paths = split_path(data, command->command);
 	if (!paths)
 		return (NULL);
 	path_access = command_path_utils(command, data, paths);

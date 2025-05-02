@@ -65,15 +65,16 @@ int main(int argc, char **argv, char **env)
 	char *r;
 	int i = 0;
 	t_data data;
-	
+
 	(void)argc;
 	(void)argv;
 	data.sortie = 0;
 	data.env = copy_env(env);
 	data.export = copy_env(env);
-	if (!data.env)
+	if (!getcwd(data.oldpwd, sizeof(data.oldpwd)))
 		return (1);
-	init_data(&data, NULL);
+	if (!data.env || !data.export)
+		return (1);
 	while (1)
 	{
 		signals_interactif();
