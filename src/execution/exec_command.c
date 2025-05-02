@@ -41,10 +41,10 @@ void	execute_execve(t_data *data, char **args, t_command *command)
 	char	*temp;
 	char	*str;
 
-	if (!ft_memcmp(args[0], MINISHELL, ft_max(ft_strlen(MINISHELL),\
-		 ft_strlen(args[0]))))
+	if (!ft_memcmp(args[0], MINISHELL, ft_max(ft_strlen(MINISHELL), \
+			ft_strlen(args[0]))))
 	{
-		pos = position_env(SHELLEVEL,data->env,ft_strlen(SHELLEVEL));
+		pos = position_env(SHELLEVEL, data->env, ft_strlen(SHELLEVEL));
 		shlvl = ft_atoi(data->env[pos] + env_parcourt(data->env[pos]) + 1) + 1;
 		temp = ft_itoa(shlvl);
 		if (!temp)

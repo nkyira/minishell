@@ -12,6 +12,17 @@
 
 #include "../../include/minishell.h"
 
+static int	checkline(char *r, char *str)
+{
+	if (!r || ft_strncmp(r, str, ft_max(ft_strlen(str), ft_strlen(r))) == 0)
+	{
+		if (!r)
+			heredoc_warning(str);
+		return (1);
+	}
+	return (0);
+}
+
 static int	redirect_heredoc(char *str)
 {
 	char	*r;
@@ -28,12 +39,8 @@ static int	redirect_heredoc(char *str)
 		signals_interactif();
 		r = readline(">");
 		signals_noninteractif();
-		if (!r || ft_strncmp(r, str, ft_max(ft_strlen(str), ft_strlen(r))) == 0)
-		{
-			if (!r)
-				heredoc_warning(str);
+		if (checkline(r, str))
 			break ;
-		}
 		ft_putendl_fd(r, fd);
 		free(r);
 	}
@@ -43,9 +50,9 @@ static int	redirect_heredoc(char *str)
 	return (0);
 }
 
-int infile(t_token *token)
+int	infile(t_token *token)
 {
-	int fd;
+	int	fd;
 
 	if (token->type == HEREDOC)
 	{
@@ -61,9 +68,9 @@ int infile(t_token *token)
 	return (fd);
 }
 
-int outfile(t_token *token)
+int	outfile(t_token *token)
 {
-	int fd;
+	int	fd;
 
 	if (token->type == TRUNC)
 		fd = open(token->next->str, O_CREAT | O_WRONLY | O_TRUNC, 0644);

@@ -33,15 +33,6 @@ t_command	*init_command(void)
 	return (command);
 }
 
-int error_fd(int fd_out, int fd_in)
-{
-	if (fd_out == -1 || fd_in == -1)
-	{
-		return (1);
-	}
-	return 0;
-} 
-
 t_redict	*init_redirect(int type, char *file)
 {
 	t_redict	*temp;
@@ -64,6 +55,16 @@ t_redict	*init_redirect(int type, char *file)
 	return (temp);
 }
 
+void	check_error_file(t_token *token, t_command *command, int *fd)
+{
+	if (command->ofile != -1 && command->infile != -1)
+	{
+		if (*fd != -2)
+			close(*fd);
+		*fd = infile(token);
+	}
+}
+
 t_command	*init_file(t_command *command, t_token *token)
 {
 	t_redict	*temp;
@@ -77,23 +78,11 @@ t_command	*init_file(t_command *command, t_token *token)
 	}
 	if (token->type == TRUNC || token->type == APPEND)
 	{
-		lastadd_redirect(&command->outfile, temp);
-		if (!error_fd(command->ofile, command->infile))
-		{
-			if (command->ofile != -2)
-				close(command->ofile);
-			command->ofile = outfile(token);
-		}
+		check_error_file(token, command, &command->ofile);
 	}
 	else if (token->type == HEREDOC || token->type == INPUT)
 	{	
-		if (!error_fd(command->ofile, command->infile))
-		{
-			if (command->infile != -2)
-				close(command->infile);
-			command->infile = infile(token);
-		}
-		lastadd_redirect(&command->inputfile, temp);
+		check_error_file(token, command, &command->infile);
 	}
 	return (command);
 }

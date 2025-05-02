@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-int redirect_infile(int fd)
+int	redirect_infile(int fd)
 {
 	if (fd == -1)
 		return (-1);
