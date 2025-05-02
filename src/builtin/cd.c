@@ -63,10 +63,26 @@ static int	raccourci(t_data *data, char *str)
 	return (0);
 }
 
-void	cd_builtin(t_data *data, char **argv)
-{	
+static int	check_road(t_data *data, char *str)
+{
 	struct stat	path_stat;
 
+	if (raccourci(data, str))
+		return (1);
+	if (cd_access_error(data, str))
+		return (1);
+	stat(str, &path_stat);
+	if (S_ISREG(path_stat.st_mode))
+	{
+		cd_error(str);
+		data->sortie = 1;
+		return (1);
+	}
+	return (0);
+}
+
+void	cd_builtin(t_data *data, char **argv)
+{	
 	if (argv[1])
 	{
 		if (argv[2])
@@ -75,17 +91,8 @@ void	cd_builtin(t_data *data, char **argv)
 			data->sortie = 1;
 			return ;
 		}
-		if (raccourci(data, argv[1]))
+		if (check_road(data, argv[1]))
 			return ;
-		if (cd_access_error(data, argv[1]))
-			return ;
-		stat(argv[1], &path_stat);
-		if (S_ISREG(path_stat.st_mode))
-		{
-			cd_error(argv[1]);
-			data->sortie = 1;
-			return ;
-		}
 		getcwd(data->oldpwd, sizeof(data->oldpwd));
 		if (chdir(argv[1]) != 0 || !data->oldpwd)
 		{

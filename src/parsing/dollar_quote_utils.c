@@ -44,7 +44,7 @@ int	size_path(char *str, char caracter)
 		return (1);
 	if (str[i] && str[i] == '?')
 		return (1);
-	while (str[i] && str[i] != caracter && !special_character(str[i]) )
+	while (str[i] && str[i] != caracter && !special_character(str[i]))
 	{
 		i++;
 	}

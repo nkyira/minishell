@@ -40,8 +40,7 @@ static char	*replace_path_util(char *str, int *i, int size_word, t_data *data)
 	int		j;
 
 	path = search_env(str + *i + 1, data, size_word);
-	j = init_size_path(path, str, &taille, size_word);
-	newstr = init_char(str, j);
+	newstr = init_char(str, init_size_path(path, str, &taille, size_word));
 	if (!newstr)
 		return (NULL);
 	j = 0;

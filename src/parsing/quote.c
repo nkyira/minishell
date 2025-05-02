@@ -42,7 +42,7 @@ char	*replace_dollar_squote(char *str, int *i, char quote)
 	char	*newstr;
 	int		taille;
 
-	temp = init_replace_quote(str, i, quote); //'\''
+	temp = init_replace_quote(str, i, quote);
 	if (!temp)
 		return (NULL);
 	taille = ft_strlen(temp);

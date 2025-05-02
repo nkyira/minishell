@@ -40,10 +40,10 @@ static	int	replace_token(t_token *token, t_data *data, int status)
 	return (0);
 }
 
-int replace_token_heredoc(t_token *token, int status)
+int	replace_token_heredoc(t_token *token, int status)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (token->str[i])
 	{
@@ -52,7 +52,7 @@ int replace_token_heredoc(t_token *token, int status)
 		{
 			if (status == SQUOTE)
 				token->str = replace_dollar_squote(token->str, &i, '\'');
-			else if(status == DQUOTE)
+			else if (status == DQUOTE)
 				token->str = replace_dollar_squote(token->str, &i, '\"');
 			status = DEFAULT;
 			if (!token->str)
@@ -61,9 +61,8 @@ int replace_token_heredoc(t_token *token, int status)
 		}
 		i++;
 	}
-	return 0;
+	return (0);
 }
-
 
 int	replace(t_data *data)
 {

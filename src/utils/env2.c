@@ -12,12 +12,12 @@
 
 #include "../../include/minishell.h"
 
-int size_list_char(char **argv)
+int	size_list_char(char **argv)
 {
 	int	i;
 
 	i = 0;
-	while(argv[i])
+	while (argv[i])
 		i++;
 	return (i);
 }

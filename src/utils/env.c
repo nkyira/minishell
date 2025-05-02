@@ -54,7 +54,7 @@ int	position_env(char *str, char **env, int n)
 		}
 		i++;
 	}
-	return (-1);	
+	return (-1);
 }
 
 char	*search_env(char *str, t_data *data, int n)
