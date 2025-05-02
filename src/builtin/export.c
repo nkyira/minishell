@@ -12,11 +12,11 @@
 
 #include "../../include/minishell.h"
 
-int check_word(char *str)
+int	check_word(char *str)
 {
 	int	i;
 
-	i = 0;	
+	i = 0;
 	if (!ft_isalpha(str[0]) && str[0] != '_')
 	{
 		return (-1);
@@ -43,7 +43,7 @@ int	export(char ***env, char *str)
 {
 	int		erreur;
 	int		pos;
-	
+
 	erreur = 0;
 	pos = position_env(str, *env, env_parcourt(str));
 	if (pos != -1)
@@ -60,24 +60,15 @@ int	export(char ***env, char *str)
 	return (1);
 }
 
-void	export_builtin(t_data *data, char **argv)
+void	loop(t_data *data, char **argv)
 {
 	int	i;
 	int	verifi;
 
-	if (!argv[1])
-	{
-		while (data->export[++i])
-		{
-			ft_putstr_fd("export ", 1);
-			ft_putendl_fd(data->export[i] , 1);
-		}
-	}
-	i = 1;
-	while (argv[i])
+	i = 0;
+	while (argv[++i])
 	{
 		verifi = check_word(argv[i]);
-		printf("verifi = %d\n", verifi);
 		if (verifi == -1)
 		{
 			error_export(argv[i]);
@@ -95,6 +86,21 @@ void	export_builtin(t_data *data, char **argv)
 			if (export(&data->env, argv[i]) == -1)
 				return ;
 		}
-		i++;
 	}
+}
+
+void	export_builtin(t_data *data, char **argv)
+{
+	int	i;
+
+	i = -1;
+	if (!argv[1])
+	{
+		while (data->export[++i])
+		{
+			ft_putstr_fd("export ", 1);
+			ft_putendl_fd(data->export[i], 1);
+		}
+	}
+	loop(data, argv);
 }

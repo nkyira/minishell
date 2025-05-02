@@ -12,11 +12,11 @@
 
 #include "../../include/minishell.h"
 
-static int check_word(char *str)
+static int	check_word(char *str)
 {
 	int	i;
 
-	i = 0;	
+	i = 0;
 	if (!ft_isalpha(str[0]) && str[0] != '_')
 	{
 		return (-1);
@@ -30,31 +30,32 @@ static int check_word(char *str)
 	return (0);
 }
 
-void	delete_env_var(t_data *data, int d)
+void	delete_env_var(char **env, int d)
 {
-	int i;
+	int	i;
+
 	if (d == -1)
 		return ;
-	while (data->env[i])
+	while (env[i])
 	{
 		if (i == d)
 		{
-			free(data->env[i]);
-			break;
+			free(env[i]);
+			break ;
 		}
 		i++;
 	}
-	while (data->env[i])
+	while (env[i])
 	{
-		data->env[i] = data->env[i + 1];
+		env[i] = env[i + 1];
 		i++;
 	}
-} 
+}
 
 void	unset_builtin(t_data *data, char **argv)
 {
 	int	i;
-	int d;
+	int	d;
 
 	i = 1;
 	while (argv[i])
@@ -67,7 +68,9 @@ void	unset_builtin(t_data *data, char **argv)
 		else
 		{
 			d = position_env(argv[i], data->env, ft_strlen(argv[i]));
-			delete_env_var(data, d);
+			delete_env_var(data->env, d);
+			d = position_env(argv[i], data->export, ft_strlen(argv[i]));
+			delete_env_var(data->export, d);
 		}
 		i++;
 	}
