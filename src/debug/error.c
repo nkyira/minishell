@@ -33,7 +33,7 @@ int	check_dir(char *path, char *cmd, t_data *data)
 
 	stat(path, &path_stat);
 	if (!S_ISREG(path_stat.st_mode))
-	{	
+	{
 		data->sortie = 126;
 		write(2, cmd, ft_strlen(cmd));
 		ft_putendl_fd(" : Is a directory", 2);
