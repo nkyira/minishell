@@ -58,6 +58,7 @@ void	unset_builtin(t_data *data, char **argv)
 	int	d;
 
 	i = 1;
+	data->sortie = 0;
 	while (argv[i])
 	{
 		if (check_word(argv[i]) == -1)

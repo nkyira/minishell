@@ -54,7 +54,7 @@ void	execute_builtin(t_data *data, t_command *command)
 	else if (ft_strncmp(command->command, "pwd", 3) == 0)
 		pwd_builtin(data, command->args);
 	else if (ft_strncmp(command->command, "echo", 4) == 0)
-		echo_builtin(command->args);
+		data->sortie = echo_builtin(command->args);
 	else if (ft_strncmp(command->command, "cd", 2) == 0)
 		cd_builtin(data, command->args);
 	else if (ft_strncmp(command->command, "export", 6) == 0)

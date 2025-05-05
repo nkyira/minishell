@@ -47,6 +47,10 @@ void	signal_reset_prompt(int signo)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	if (signo == SIGINT)
+	{
+		g_exit = 130;
+	}
 }
 
 /* signals_interactive:
@@ -60,6 +64,7 @@ void	signals_interactif(void)
 {
 	struct sigaction	sig;
 
+	g_exit = 0;
 	ignore_sigquit();
 	ft_memset(&sig, 0, sizeof(sig));
 	sig.sa_handler = &signal_reset_prompt;

@@ -12,6 +12,8 @@
 
 #include "../include/minishell.h"
 
+volatile sig_atomic_t	g_exit = 0;
+
 int	main(int argc, char **argv, char **env)
 {
 	char	*r;
@@ -36,6 +38,6 @@ int	main(int argc, char **argv, char **env)
 		parsing_start(&data);
 		free_data(&data);
 	}
-	ft_exit(&data, 1);
+	ft_exit(&data, 0);
 	return (0);
 }

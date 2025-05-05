@@ -26,6 +26,8 @@
 # define MINISHELL "./minishell"
 # define SHELLEVEL "SHLVL"
 
+extern volatile sig_atomic_t	g_exit;
+
 enum e_type {
 	ESPACE=1,
 	INPUT,
@@ -181,7 +183,7 @@ void		exit_builtin(t_data *data, char **argv);
 void		pwd_builtin(t_data *data, char **argv);
 void		cd_builtin(t_data *data, char **argv);
 void		export_builtin(t_data *data, char **argv);
-void		echo_builtin(char **argv);
+int			echo_builtin(char **argv);
 void		unset_builtin(t_data *data, char **argv);
 void		env_builtin(t_data *data, char **argv);
 

@@ -30,7 +30,7 @@ int	successive_n(char *str)
 	return (1);
 }
 
-void	echo_builtin(char **argv)
+int	echo_builtin(char **argv)
 {
 	int	i;
 	int	no_new_line_flag;
@@ -51,4 +51,5 @@ void	echo_builtin(char **argv)
 	}
 	if (no_new_line_flag == 0)
 		ft_printf("\n");
+	return (0);
 }

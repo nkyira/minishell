@@ -83,6 +83,7 @@ static int	check_road(t_data *data, char *str)
 
 void	cd_builtin(t_data *data, char **argv)
 {	
+	data->sortie = 0;
 	if (argv[1])
 	{
 		if (argv[2])

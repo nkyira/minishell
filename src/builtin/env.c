@@ -17,6 +17,7 @@ void	env_builtin(t_data *data, char **argv)
 	int	i;
 
 	i = 0;
+	data->sortie = 0;
 	(void)argv;
 	if (!data || !data->env)
 	{

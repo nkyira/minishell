@@ -64,6 +64,8 @@ char	*search_env(char *str, t_data *data, int n)
 	i = 0;
 	if (str[0] == '?')
 	{
+		if (g_exit != 0)
+			return (ft_itoa(g_exit));
 		return (ft_itoa(data->sortie));
 	}
 	if (str[0] == '$')

@@ -17,6 +17,7 @@ void	pwd_builtin(t_data *data, char **argv)
 	char	buf[PATH_MAX];
 
 	(void)argv;
+	data->sortie = 0;
 	if (getcwd(buf, sizeof(buf)))
 	{
 		ft_putendl_fd(buf, 1);

@@ -94,6 +94,7 @@ void	export_builtin(t_data *data, char **argv)
 	int	i;
 
 	i = -1;
+	data->sortie = 0;
 	if (!argv[1])
 	{
 		while (data->export[++i])
